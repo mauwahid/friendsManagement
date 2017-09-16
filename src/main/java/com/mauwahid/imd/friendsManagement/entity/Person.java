@@ -14,11 +14,14 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+    @Column(unique = true)
     private String email;
 
     @OneToMany(mappedBy = "person")
     private Set<PersonStatus> personStatuses;
 
+    @OneToMany
     @JoinTable(name = "blocked_people",
     joinColumns = {
             @JoinColumn(name="id_person",referencedColumnName = "id",nullable = false)
@@ -26,7 +29,7 @@ public class Person {
     inverseJoinColumns = {
             @JoinColumn(name="id_blocked_person",referencedColumnName = "id",nullable = false)
     })
-    private ArrayList<Person> blockedPeople;
+    private Set<Person> blockedPeople;
 
     @OneToMany(mappedBy = "personRequestor")
     private Set<PersonFriendship> personRequestor;
@@ -34,8 +37,19 @@ public class Person {
     @OneToMany(mappedBy = "personAcceptor")
     private Set<PersonFriendship> personAcceptor;
 
+  /*  @OneToMany
+    @JoinTable(name = "friendship",
+            joinColumns = {
+                    @JoinColumn(name="id_person_requester",referencedColumnName = "id",nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name="id_person_acceptor",referencedColumnName = "id",nullable = false)
+            })
+    private Set<Person> requestedFriend;
+*/
 
 
+    @OneToMany
     @JoinTable(name = "subscriptions",
             joinColumns = {
                     @JoinColumn(name="id_person",referencedColumnName = "id",nullable = false)
@@ -43,7 +57,7 @@ public class Person {
             inverseJoinColumns = {
                     @JoinColumn(name="id_subscriber",referencedColumnName = "id",nullable = false)
             })
-    private ArrayList<Person> subscribers;
+    private Set<Person> subscribers;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -73,19 +87,19 @@ public class Person {
         this.email = email;
     }
 
-    public ArrayList<Person> getBlockedPeople() {
+    public Set<Person> getBlockedPeople() {
         return blockedPeople;
     }
 
-    public void setBlockedPeople(ArrayList<Person> blockedPeople) {
+    public void setBlockedPeople(Set<Person> blockedPeople) {
         this.blockedPeople = blockedPeople;
     }
 
-    public ArrayList<Person> getSubscribers() {
+    public Set<Person> getSubscribers() {
         return subscribers;
     }
 
-    public void setSubscribers(ArrayList<Person> subscribers) {
+    public void setSubscribers(Set<Person> subscribers) {
         this.subscribers = subscribers;
     }
 
@@ -103,5 +117,21 @@ public class Person {
 
     public void setPersonStatuses(Set<PersonStatus> personStatuses) {
         this.personStatuses = personStatuses;
+    }
+
+    public Set<PersonFriendship> getPersonRequestor() {
+        return personRequestor;
+    }
+
+    public void setPersonRequestor(Set<PersonFriendship> personRequestor) {
+        this.personRequestor = personRequestor;
+    }
+
+    public Set<PersonFriendship> getPersonAcceptor() {
+        return personAcceptor;
+    }
+
+    public void setPersonAcceptor(Set<PersonFriendship> personAcceptor) {
+        this.personAcceptor = personAcceptor;
     }
 }

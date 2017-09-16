@@ -25,6 +25,35 @@ public class PersonFriendship {
     private Date friendShipDate;
 
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public Person getPersonRequestor() {
+        return personRequestor;
+    }
+
+    public void setPersonRequestor(Person personRequestor) {
+        this.personRequestor = personRequestor;
+    }
+
+    public Person getPersonAcceptor() {
+        return personAcceptor;
+    }
+
+    public void setPersonAcceptor(Person personAcceptor) {
+        this.personAcceptor = personAcceptor;
+    }
+
+    public Date getFriendShipDate() {
+        return friendShipDate;
+    }
+
+    public void setFriendShipDate(Date friendShipDate) {
+        this.friendShipDate = friendShipDate;
+    }
 }
