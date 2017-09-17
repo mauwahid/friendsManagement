@@ -11,5 +11,7 @@ public interface PersonRepository extends CrudRepository<Person,Long>,CustomPers
 
     Set<Person> findByEmail(String email);
 
+    Set<Person> findByEmailIn(Set<String> emails);
+
 
 }

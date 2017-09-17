@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class PersonStatus {
+public class PersonStory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,7 +13,7 @@ public class PersonStatus {
     @ManyToOne
     @JoinColumn
     private Person person;
-    private String personStatus;
+    private String text;
 
     @OneToMany
     @JoinTable(name = "mentioned",
@@ -42,12 +42,12 @@ public class PersonStatus {
         this.person = person;
     }
 
-    public String getPersonStatus() {
-        return personStatus;
+    public String getText() {
+        return text;
     }
 
-    public void setPersonStatus(String personStatus) {
-        this.personStatus = personStatus;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Set<Person> getMentionedPeople() {

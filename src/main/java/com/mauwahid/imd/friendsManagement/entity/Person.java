@@ -3,7 +3,6 @@ package com.mauwahid.imd.friendsManagement.entity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,23 +12,26 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
 
     @Column(unique = true)
     private String email;
 
     @OneToMany(mappedBy = "person")
-    private Set<PersonStatus> personStatuses;
+    private Set<PersonStory> personStories;
 
-    @OneToMany
+    @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name = "blocked_people",
     joinColumns = {
-            @JoinColumn(name="id_person",referencedColumnName = "id",nullable = false)
+            @JoinColumn(name="id_person")
     },
     inverseJoinColumns = {
-            @JoinColumn(name="id_blocked_person",referencedColumnName = "id",nullable = false)
+            @JoinColumn(name="id_blocked_person")
     })
     private Set<Person> blockedPeople;
+
+    @ManyToMany(mappedBy = "blockedPeople")
+    private Set<Person> blockerPeople;
+
 
     @OneToMany(mappedBy = "personRequestor")
     private Set<PersonFriendship> personRequestor;
@@ -37,31 +39,23 @@ public class Person {
     @OneToMany(mappedBy = "personAcceptor")
     private Set<PersonFriendship> personAcceptor;
 
-  /*  @OneToMany
-    @JoinTable(name = "friendship",
-            joinColumns = {
-                    @JoinColumn(name="id_person_requester",referencedColumnName = "id",nullable = false)
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name="id_person_acceptor",referencedColumnName = "id",nullable = false)
-            })
-    private Set<Person> requestedFriend;
-*/
-
-
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "subscriptions",
             joinColumns = {
-                    @JoinColumn(name="id_person",referencedColumnName = "id",nullable = false)
+                    @JoinColumn(name="id_person")
             },
             inverseJoinColumns = {
-                    @JoinColumn(name="id_subscriber",referencedColumnName = "id",nullable = false)
+                    @JoinColumn(name="id_subscriber")
             })
-    private Set<Person> subscribers;
+    private Set<Person> subscribersPeople;
+
+    @ManyToMany(mappedBy = "subscribersPeople")
+    private Set<Person> subscribedPeople;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date joinDate;
+
 
     public Long getId() {
         return id;
@@ -69,14 +63,6 @@ public class Person {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
@@ -95,12 +81,28 @@ public class Person {
         this.blockedPeople = blockedPeople;
     }
 
-    public Set<Person> getSubscribers() {
-        return subscribers;
+    public Set<Person> getSubscribersPeople() {
+        return subscribersPeople;
     }
 
-    public void setSubscribers(Set<Person> subscribers) {
-        this.subscribers = subscribers;
+    public void setSubscribersPeople(Set<Person> subscribersPeople) {
+        this.subscribersPeople = subscribersPeople;
+    }
+
+    public Set<Person> getBlockerPeople() {
+        return blockerPeople;
+    }
+
+    public void setBlockerPeople(Set<Person> blockerPeople) {
+        this.blockerPeople = blockerPeople;
+    }
+
+    public Set<Person> getSubscribedPeople() {
+        return subscribedPeople;
+    }
+
+    public void setSubscribedPeople(Set<Person> subscribedPeople) {
+        this.subscribedPeople = subscribedPeople;
     }
 
     public Date getJoinDate() {
@@ -111,12 +113,12 @@ public class Person {
         this.joinDate = joinDate;
     }
 
-    public Set<PersonStatus> getPersonStatuses() {
-        return personStatuses;
+    public Set<PersonStory> getPersonStories() {
+        return personStories;
     }
 
-    public void setPersonStatuses(Set<PersonStatus> personStatuses) {
-        this.personStatuses = personStatuses;
+    public void setPersonStories(Set<PersonStory> personStories) {
+        this.personStories = personStories;
     }
 
     public Set<PersonFriendship> getPersonRequestor() {

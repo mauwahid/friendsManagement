@@ -31,7 +31,7 @@ public class PersonRepositoryImpl implements CustomPersonRepository {
 
         personFriendshipRepository.findByPersonRequestor(person).stream().forEach(i->
         {
-            friendList.add((i.getPersonRequestor()));
+            friendList.add((i.getPersonAcceptor()));
         });
 
 
@@ -40,20 +40,20 @@ public class PersonRepositoryImpl implements CustomPersonRepository {
 
     @Override
     public Set<Person> findMutualFriend(Person person1, Person person2) {
-        Set<Person> mutual = new HashSet<>();
+        Set<Person> common = new HashSet<>();
 
         Set<Person> person1Friends =  getAllFriend(person1).stream().filter(
                 data -> data.getId()!= person2.getId()
         ).collect(Collectors.toSet());
 
-        Set<Person> person2Friends = getAllFriend(person1).stream().filter(
+        Set<Person> person2Friends = getAllFriend(person2).stream().filter(
                 data -> data.getId()!= person1.getId()
         ).collect(Collectors.toSet());
 
-        mutual.addAll(person1Friends);
-        mutual.addAll(person2Friends);
+        common.addAll(person1Friends);
+        common.retainAll(person2Friends);
 
-        return mutual;
+        return common;
     }
 
 
