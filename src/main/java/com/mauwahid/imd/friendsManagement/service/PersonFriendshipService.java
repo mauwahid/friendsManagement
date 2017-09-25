@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,12 +62,19 @@ public class PersonFriendshipService {
             return false;
         }
 
+        List<PersonFriendship> personFriendships = personFriendshipRepository.findByPersonRequestorAndPersonAcceptor(person,person2);
 
-        if(personFriendshipRepository.findByPersonRequestorAndPersonAcceptor(person,person2)!=null){
-            return true;
-        }else if(personFriendshipRepository.findByPersonRequestorAndPersonAcceptor(person2,person)!=null){
+        if(personFriendships!=null && personFriendships.size()!=0){
+           return  true;
+        }
+
+
+        List<PersonFriendship> personFriendships2 = personFriendshipRepository.findByPersonRequestorAndPersonAcceptor(person2,person);
+
+        if(personFriendships2!=null && personFriendships2.size()!=0){
             return true;
         }
+
 
         return false;
     }
