@@ -116,7 +116,6 @@ public class PersonController {
         }
 
 
-
         if(personService.hasSubscribe(subscribeRequest.getRequestor(),subscribeRequest.getTarget())){
             return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_DUPLICATE_SUBSCIRBE), HttpStatus.BAD_REQUEST);
 

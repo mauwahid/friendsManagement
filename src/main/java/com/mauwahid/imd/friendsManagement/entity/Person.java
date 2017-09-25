@@ -47,10 +47,10 @@ public class Person {
             inverseJoinColumns = {
                     @JoinColumn(name="id_subscriber")
             })
-    private Set<Person> subscribersPeople;
-
-    @ManyToMany(mappedBy = "subscribersPeople",fetch = FetchType.EAGER)
     private Set<Person> subscribedPeople;
+
+    @ManyToMany(mappedBy = "subscribedPeople",fetch = FetchType.EAGER)
+    private Set<Person> subscribersPeople;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

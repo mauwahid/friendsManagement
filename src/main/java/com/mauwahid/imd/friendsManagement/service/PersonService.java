@@ -73,8 +73,8 @@ public class PersonService {
         }
 
 
-        if(requestor.getSubscribersPeople()!=null){
-            requestor.getSubscribersPeople().add(target);
+        if(requestor.getSubscribedPeople()!=null){
+            requestor.getSubscribedPeople().add(target);
         }else{
             Set<Person> personSet = new HashSet<>();
             personSet.add(target);
