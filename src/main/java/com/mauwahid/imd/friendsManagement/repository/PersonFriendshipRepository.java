@@ -12,4 +12,6 @@ public interface PersonFriendshipRepository extends CrudRepository<PersonFriends
 
     List<PersonFriendship> findByPersonAcceptor(Person person);
 
+    List<PersonFriendship> findByPersonRequestorAndPersonAcceptor(Person requestor, Person acceptor);
+
 }

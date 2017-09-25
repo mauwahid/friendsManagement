@@ -7,18 +7,20 @@ import com.mauwahid.imd.friendsManagement.repository.PersonStoryRepository;
 import com.mauwahid.imd.friendsManagement.utils.Common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class PersonStoryService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    PersonStoryRepository personStoryRepository;
+    private PersonStoryRepository personStoryRepository;
 
     public Set<String> postStatus(String emailSender, String text){
 
@@ -43,8 +45,22 @@ public class PersonStoryService {
         });
 
         Set<Person> friends = personRepository.getAllFriend(person);
-        Set<Person> blocked = person.getBlockedPeople();
-        Set<Person> subscribers = person.getSubscribersPeople();
+        Set<Person> blocked;
+        Set<Person> subscribers;
+
+        try{
+            blocked = person.getBlockedPeople();
+        }catch (NullPointerException ex){
+            blocked = new HashSet<>();
+        }
+
+        try{
+            subscribers = person.getSubscribersPeople();
+        }catch (NullPointerException ex){
+            subscribers = new HashSet<>();
+        }
+
+
 
         Set<Person> receiverPeople = memberMentioned;
         receiverPeople.addAll(subscribers);

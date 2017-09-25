@@ -9,7 +9,22 @@ public class ErrorResponse extends DefaultResponse {
     public static String ERR_DATA_FORMAT = "Error : JSON/Data Format error";
 
     @JsonIgnore
-    public static String ERR_MORE_THAN_TWO = "Error : email relation cannot more than two";
+    public static String ERR_NOT_TWO = "Error : email relation must be two";
+
+    @JsonIgnore
+    public static String ERR_DUPLICATE_SUBSCIRBE = "Error : This target has been subscribed before(duplicate request)";
+
+    @JsonIgnore
+    public static String ERR_DUPLICATE_BLOCK = "Error : This target has been blocked before(duplicate request)";
+
+    @JsonIgnore
+    public static String ERR_DUPLICATE_ADDFRIENDS = "Error : These emails has friendship (duplicate request)";
+
+    @JsonIgnore
+    public static String ERR_WRONG_EMAIL_FORMAT = "Error : Email format not valid";
+
+    public static String ERR_SAME_EMAIL = "Error : Email must be different";
+
 
     public static ErrorResponse getErrorResponse(String statusDesc){
         ErrorResponse errorResponse = new ErrorResponse();

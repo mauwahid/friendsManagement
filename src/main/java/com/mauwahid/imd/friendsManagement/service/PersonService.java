@@ -4,67 +4,116 @@ import com.mauwahid.imd.friendsManagement.entity.Person;
 import com.mauwahid.imd.friendsManagement.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
-@Component
+@Service
 public class PersonService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     public Set<Person> getFriendList(String email){
-        Person person = personRepository.findByEmail(email).stream().findFirst().get();
-        return personRepository.getAllFriend(person);
+        Person person = null;
+
+        try{
+            person = personRepository.findByEmail(email).stream().findFirst().get();
+            return personRepository.getAllFriend(person);
+
+        }catch (NoSuchElementException ex){
+            return null;
+        }
     }
 
     public void blockPerson(String requestorEmail, String targetEmail){
-        Person person = personRepository.findByEmail(requestorEmail).stream().findFirst().orElse(null);
-        Person person2 = personRepository.findByEmail(targetEmail).stream().findFirst().orElse(null);
+        Person requestor = personRepository.findByEmail(requestorEmail).stream().findFirst().orElse(null);
+        Person target = personRepository.findByEmail(targetEmail).stream().findFirst().orElse(null);
 
-        if(person==null){
-            person = new Person();
-            person.setEmail(requestorEmail);
-            personRepository.save(person);
+        if(requestor==null){
+            requestor = new Person();
+            requestor.setEmail(requestorEmail);
+            personRepository.save(requestor);
         }
 
-        if(person2==null){
-            person2 = new Person();
-            person2.setEmail(targetEmail);
-            personRepository.save(person2);
+        if(target==null){
+            target = new Person();
+            target.setEmail(targetEmail);
+            personRepository.save(target);
         }
 
-        if(person.getBlockedPeople()!=null){
-            person.getBlockedPeople().add(person2);
+        if(requestor.getBlockedPeople()!=null){
+            requestor.getBlockedPeople().add(target);
         }else{
             Set<Person> personSet = new HashSet<>();
-            personSet.add(person2);
+            personSet.add(target);
 
-            person.setBlockedPeople(personSet);
+            requestor.setBlockedPeople(personSet);
         }
-        personRepository.save(person);
+        personRepository.save(requestor);
     }
 
     public void subscribe(String requestorEmail, String targetEmail){
-        Person person = personRepository.findByEmail(requestorEmail).stream().findFirst().orElse(null);
-        Person person2 = personRepository.findByEmail(targetEmail).stream().findFirst().orElse(null);
+        Person requestor = personRepository.findByEmail(requestorEmail).stream().findFirst().orElse(null);
+        Person target = personRepository.findByEmail(targetEmail).stream().findFirst().orElse(null);
 
-        if(person==null){
-            person = new Person();
-            person.setEmail(requestorEmail);
-            personRepository.save(person);
+        if(requestor==null){
+            requestor = new Person();
+            requestor.setEmail(requestorEmail);
+            personRepository.save(requestor);
         }
 
-        if(person2==null){
-            person2 = new Person();
-            person2.setEmail(targetEmail);
-            personRepository.save(person2);
+        if(target==null){
+            target = new Person();
+            target.setEmail(targetEmail);
+            personRepository.save(target);
         }
 
-        person2.getSubscribersPeople().add(person);
-        personRepository.save(person);
+
+        if(requestor.getSubscribersPeople()!=null){
+            requestor.getSubscribersPeople().add(target);
+        }else{
+            Set<Person> personSet = new HashSet<>();
+            personSet.add(target);
+
+            requestor.setSubscribedPeople(personSet);
+        }
+
+        personRepository.save(requestor);
     }
 
+
+    public boolean hasSubscribe(String requestorEmail, String targetEmail){
+        Person requestor = personRepository.findByEmail(requestorEmail).stream().findFirst().orElse(null);
+        Person target = personRepository.findByEmail(targetEmail).stream().findFirst().orElse(null);
+
+        if(requestor==null|| target==null)
+            return false;
+
+
+        if(requestor.getSubscribersPeople()!=null && requestor.getSubscribersPeople().contains(target))
+            return true;
+
+
+        return false;
+    }
+
+    public boolean hasBlocked(String requestorEmail, String targetEmail){
+        Person requestor = personRepository.findByEmail(requestorEmail).stream().findFirst().orElse(null);
+        Person target = personRepository.findByEmail(targetEmail).stream().findFirst().orElse(null);
+
+        if(requestor==null|| target==null){
+            return false;
+        }
+
+        if(requestor.getBlockedPeople()!=null && requestor.getBlockedPeople().contains(target)){
+            return true;
+        };
+
+        return false;
+    }
 
 }

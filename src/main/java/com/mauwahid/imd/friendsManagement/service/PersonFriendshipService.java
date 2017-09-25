@@ -5,23 +5,27 @@ import com.mauwahid.imd.friendsManagement.entity.PersonFriendship;
 import com.mauwahid.imd.friendsManagement.repository.PersonFriendshipRepository;
 import com.mauwahid.imd.friendsManagement.repository.PersonRepository;
 import com.mauwahid.imd.friendsManagement.repository.PersonStoryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
-public class FriendshipService {
+@Service
+public class PersonFriendshipService {
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    PersonFriendshipRepository personFriendshipRepository;
+    private PersonFriendshipRepository personFriendshipRepository;
 
     @Autowired
-    PersonStoryRepository personStoryRepository;
+    private PersonStoryRepository personStoryRepository;
+
+    Logger logger = LoggerFactory.getLogger(PersonFriendshipService.class);
 
 
     public void addFriendRelation(String email1, String email2){
@@ -49,12 +53,23 @@ public class FriendshipService {
     }
 
     public boolean isFriendship(String email1,String email2){
+
         Person person = personRepository.findByEmail(email1).stream().findFirst().orElse(null);
         Person person2 = personRepository.findByEmail(email2).stream().findFirst().orElse(null);
 
+        if(person==null || person2==null){
+            return false;
+        }
+
+
+        if(personFriendshipRepository.findByPersonRequestorAndPersonAcceptor(person,person2)!=null){
+            return true;
+        }else if(personFriendshipRepository.findByPersonRequestorAndPersonAcceptor(person2,person)!=null){
+            return true;
+        }
+
         return false;
     }
-
 
     public Set<String> getCommonFriends(String email1,String email2){
         Person person = personRepository.findByEmail(email1).stream().findFirst().orElse(null);
