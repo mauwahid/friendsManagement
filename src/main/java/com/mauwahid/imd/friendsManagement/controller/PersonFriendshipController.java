@@ -53,6 +53,12 @@ public class PersonFriendshipController {
             return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_WRONG_EMAIL_FORMAT), HttpStatus.BAD_REQUEST);
         }
 
+        if(emails[0].equalsIgnoreCase(emails[1]))
+        {
+            return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_SAME_EMAIL), HttpStatus.BAD_REQUEST);
+
+        }
+
         if(personFriendshipService.isFriendship(emails[0], emails[1])){
             return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_DUPLICATE_ADDFRIENDS), HttpStatus.BAD_REQUEST);
         }
@@ -77,7 +83,7 @@ public class PersonFriendshipController {
 
         }
 
-        if(commonFriendRequest.getFriends()[0].equalsIgnoreCase(commonFriendRequest.getFriends()[0]))
+        if(commonFriendRequest.getFriends()[0].equalsIgnoreCase(commonFriendRequest.getFriends()[1]))
         {
             return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_SAME_EMAIL), HttpStatus.BAD_REQUEST);
 

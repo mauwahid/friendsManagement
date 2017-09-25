@@ -91,6 +91,12 @@ public class PersonController {
 
         }
 
+        if(blockRequest.getRequestor().equalsIgnoreCase(blockRequest.getTarget()))
+        {
+            return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_SAME_EMAIL), HttpStatus.BAD_REQUEST);
+
+        }
+
         personService.blockPerson(blockRequest.getRequestor(),blockRequest.getTarget());
 
         return new ResponseEntity(new DefaultResponse(),HttpStatus.OK);
@@ -108,6 +114,8 @@ public class PersonController {
             return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_SAME_EMAIL), HttpStatus.BAD_REQUEST);
 
         }
+
+
 
         if(personService.hasSubscribe(subscribeRequest.getRequestor(),subscribeRequest.getTarget())){
             return new ResponseEntity(ErrorResponse.getErrorResponse(ErrorResponse.ERR_DUPLICATE_SUBSCIRBE), HttpStatus.BAD_REQUEST);

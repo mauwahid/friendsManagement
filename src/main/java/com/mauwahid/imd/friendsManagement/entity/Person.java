@@ -19,7 +19,7 @@ public class Person {
     @OneToMany(mappedBy = "person")
     private Set<PersonStory> personStories;
 
-    @ManyToMany(cascade={CascadeType.ALL})
+    @ManyToMany(cascade={CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinTable(name = "blocked_people",
     joinColumns = {
             @JoinColumn(name="id_person")
@@ -29,7 +29,7 @@ public class Person {
     })
     private Set<Person> blockedPeople;
 
-    @ManyToMany(mappedBy = "blockedPeople")
+    @ManyToMany(mappedBy = "blockedPeople",fetch = FetchType.EAGER)
     private Set<Person> blockerPeople;
 
 
@@ -39,7 +39,7 @@ public class Person {
     @OneToMany(mappedBy = "personAcceptor")
     private Set<PersonFriendship> personAcceptor;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "subscriptions",
             joinColumns = {
                     @JoinColumn(name="id_person")
@@ -49,7 +49,7 @@ public class Person {
             })
     private Set<Person> subscribersPeople;
 
-    @ManyToMany(mappedBy = "subscribersPeople")
+    @ManyToMany(mappedBy = "subscribersPeople",fetch = FetchType.EAGER)
     private Set<Person> subscribedPeople;
 
     @CreationTimestamp

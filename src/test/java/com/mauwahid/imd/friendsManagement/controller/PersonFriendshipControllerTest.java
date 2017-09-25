@@ -71,21 +71,7 @@ public class PersonFriendshipControllerTest {
     }
 
 
-    @Test
-    public void getCommonFriends() throws Exception {
-        String jsonReq = "{\n" +
-                "\t\"friends\": [\"mail1@example.com\", \"mail3@example.com\"]\n" +
-                "}";
 
-        mockMvc.perform(
-                MockMvcRequestBuilders.post("/friendship/common")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(jsonReq)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true)).andDo(print());
-
-    }
 
 
 
